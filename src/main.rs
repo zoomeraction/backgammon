@@ -4,6 +4,7 @@ use std::{fs::read};
 use std::fs::OpenOptions;
 use std::io::Write;
 use std::io;
+use std::time::Instant;
 
 fn write_to_file(game_move: &(i32, i32, i32)) {
     let data = format!("{}, {}, {}\n", game_move.0, game_move.1, game_move.2);
@@ -116,6 +117,14 @@ pub fn display_board(board: &Vec<(i32, i32)>, hit_stones_1: &i32, hit_stones_2: 
     println!("hit_stones_2: {}", hit_stones_2);
     println!("out_stones_1: {}", 15 - *keep_count_of_1_stones);
     println!("out_stones_2: {}", 15 - *keep_count_of_2_stones);
+    if 15 - *keep_count_of_1_stones > 15 {
+        println!("SSSSSS 111111 > 15");
+        read_input();
+    }
+    if 15 - *keep_count_of_2_stones > 15 {
+        println!("SSSSSS 2222222 > 15");
+        read_input();
+    }
     let mut s1 = 0;
     let mut s2 = 0;
     for i in 0..=23{
@@ -201,7 +210,7 @@ fn update_board(board: &mut Vec<(i32, i32)>, game_move: &(i32, i32, i32), hit_st
         }
     }
     // This is a shitty fix for whatever is
-    println!("hitstones1: {}, hitstones2: {}", *hit_stones_1, *hit_stones_2);
+    // println!("hitstones1: {}, hitstones2: {}", *hit_stones_1, *hit_stones_2);
     // if *hit_stones_1 < 0 {
     //     *hit_stones_1 = 0;
     // }
@@ -230,10 +239,12 @@ fn read_input() -> i32 {
         }
     }
 }
+
 /* 
     play 
     backgammon game simulation
 */
+
 pub fn play(number_of_games: i32, history_of_games: &mut Vec<( Vec<(i32, i32, i32)>, Vec<(i32, i32)>)>){
     let mut i = 0;
     
@@ -270,9 +281,9 @@ pub fn play(number_of_games: i32, history_of_games: &mut Vec<( Vec<(i32, i32, i3
 
                 // START: PLAYER 11111 WITH TWO DICES NOT ALIKE
                 if (history_of_dice.len() % 2) == 1 {
-                    println!("PPPPPPPPP 11111111111111");
-                    println!("keep_count_1: {},keep_count_2 {}", keep_count_of_1_stones, keep_count_of_2_stones);
-                    display_board(&board, &hit_stones_1, &hit_stones_2, &mut keep_count_of_1_stones, &mut keep_count_of_2_stones);
+                    // println!("PPPPPPPPP 11111111111111");
+                    // println!("keep_count_1: {},keep_count_2 {}", keep_count_of_1_stones, keep_count_of_2_stones);
+                    // display_board(&board, &hit_stones_1, &hit_stones_2, &mut keep_count_of_1_stones, &mut keep_count_of_2_stones);
                     let mut d1_used: bool = false;
                     let mut d2_used: bool = false;
                     for i in 0..2{
@@ -413,7 +424,7 @@ pub fn play(number_of_games: i32, history_of_games: &mut Vec<( Vec<(i32, i32, i3
                                                         }else{
                                                             // moving inside the hourse
                                                                 if !(board[i - (last_roll.1 as usize)].0 == 2 && board[i - (last_roll.1 as usize)].1 >= 2) {
-                                                                    possible_moves.push((1, i as i32, (i - (last_roll.1 as usize)) as i32))
+                                                                    possible_moves.push((1,  (i - (last_roll.1 as usize)) as i32, i as i32))
                                                                 }
                                                         }
                                                         
@@ -594,8 +605,8 @@ pub fn play(number_of_games: i32, history_of_games: &mut Vec<( Vec<(i32, i32, i3
 
                 // START: PLAYER 22222 TURN WITH DICES NOT ALIKE
                 } else {
-                    println!("PPPPPPPPP 2222222222222");
-                    println!("keep_count_1: {},keep_count_2 {}", keep_count_of_1_stones, keep_count_of_2_stones);
+                    // println!("PPPPPPPPP 2222222222222");
+                    // println!("keep_count_1: {},keep_count_2 {}", keep_count_of_1_stones, keep_count_of_2_stones);
                     display_board(&board, &hit_stones_1, &hit_stones_2, &mut keep_count_of_1_stones, &mut keep_count_of_2_stones);
                     let mut d1_used: bool = false;
                     let mut d2_used: bool = false;
@@ -672,7 +683,7 @@ pub fn play(number_of_games: i32, history_of_games: &mut Vec<( Vec<(i32, i32, i3
                                                         if i + (last_roll.0 as usize) > 23{
                                                             possible_moves.push((2, -2, i as i32));
                                                         }else{
-                                                            if !(board[i - (last_roll.0 as usize)].0 == 1 && board[i - (last_roll.0 as usize)].1 >= 1) {
+                                                            if !(board[i + (last_roll.0 as usize)].0 == 1 && board[i + (last_roll.0 as usize)].1 >= 2) {
                                                                 possible_moves.push((2, (i + (last_roll.0 as usize)) as i32, i as i32));
                                                             }
                                                         }
@@ -786,7 +797,7 @@ pub fn play(number_of_games: i32, history_of_games: &mut Vec<( Vec<(i32, i32, i3
                                                         if i + (last_roll.0 as usize) > 23{
                                                             possible_moves.push((2,  -2, i as i32));
                                                         }else{
-                                                            if !(board[i - (last_roll.0 as usize)].0 == 1 && board[i - (last_roll.0 as usize)].1 >= 2) {
+                                                            if !(board[i + (last_roll.0 as usize)].0 == 1 && board[i + (last_roll.0 as usize)].1 >= 2) {
                                                                 possible_moves.push((2,  (i + (last_roll.0 as usize)) as i32, i as i32));
                                                             }
                                                         }
@@ -897,9 +908,9 @@ pub fn play(number_of_games: i32, history_of_games: &mut Vec<( Vec<(i32, i32, i3
             } 
             // This else statement is for double dices like (1,1),(2,2),(4,4)...
             else {
-                println!("DOUBLE DOUBLE DOUBLE DOUBLE");
+                // println!("DOUBLE DOUBLE DOUBLE DOUBLE");
                 if history_of_dice.len() % 2 == 1 {
-                    println!("PPPPPPPPP 11111111111111");
+                    // println!("PPPPPPPPP 11111111111111");
                     display_board(&board, &hit_stones_1, &hit_stones_2, &mut keep_count_of_1_stones, &mut keep_count_of_2_stones);
                     for i in 0..4{
                         match history_of_dice.last() {
@@ -967,7 +978,7 @@ pub fn play(number_of_games: i32, history_of_games: &mut Vec<( Vec<(i32, i32, i3
                         }
                     }
                 } else {
-                    println!("PPPPPPPPP 2222222222222222");
+                    //println!("PPPPPPPPP 2222222222222222");
                     display_board(&board, &hit_stones_1, &hit_stones_2, &mut keep_count_of_1_stones, &mut keep_count_of_2_stones);
                     for i in 0..4{
                         match history_of_dice.last() {
@@ -997,7 +1008,7 @@ pub fn play(number_of_games: i32, history_of_games: &mut Vec<( Vec<(i32, i32, i3
                                                     possible_moves.push(game_move);
                                                     
                                                 } else {
-                                                    if !(board[i  - (last_roll.0 as usize)].0 == 1  && board[i - (last_roll.0 as usize)].1 >= 2) {
+                                                    if !(board[i  + (last_roll.0 as usize)].0 == 1  && board[i + (last_roll.0 as usize)].1 >= 2) {
                                                         possible_moves.push((2,  (i as i32) + last_roll.0, i as i32));
                                                     }
                                                 }
@@ -1037,20 +1048,29 @@ pub fn play(number_of_games: i32, history_of_games: &mut Vec<( Vec<(i32, i32, i3
                     }
                 }
             }
-            println!("number of steps: {}", number_of_steps);      
-            if keep_count_of_1_stones == 0{
+            // println!("number of steps: {}", number_of_steps);      
+            if keep_count_of_1_stones > 15 {
+                read_input();
+            }
+            if keep_count_of_2_stones > 15 {
+                read_input();
+            }
+            if keep_count_of_1_stones <= 0{
                 win_1 += 1;
             }
-            if keep_count_of_2_stones == 0{
+            if keep_count_of_2_stones <= 0{
                 win_2 += 1;
             }
         }
 
-        
+        read_input();
         i += 1;
-        println!("win rate: {}, {}", win_1, win_2);
+        write_to_file(&(0,0,0));
+        write_to_file_dice(&(0,0));
+        println!("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         
     }
+    println!("win rate: {}, {}", win_1, win_2);
 }
 
 // pub fn mut_vec(v: &mut Vec<i32>){
@@ -1107,10 +1127,11 @@ fn main() {
     let mut hit_stones_2 : i32 = 0;
     let mut keep_count_of_1_stones: i32 = 15;
     let mut keep_count_of_2_stones: i32 = 15;
-    let mut board: Vec<(i32, i32)> = vec![(1,2), (1,2), (1,5), (1,5), (1,1), (0,0),
-                                        (0,0), (0,0), (0,0), (0,0), (0,0), (0,0),
-                                        (0,0), (0,0), (0,0), (0,0), (0,0), (0,0),
-                                        (0,0), (2,5), (2,3), (2,5), (2,2), (0,0)];
+    // let mut board: Vec<(i32, i32)> = vec![(1,2), (1,2), (1,5), (1,5), (1,1), (0,0),
+    //                                     (0,0), (0,0), (0,0), (0,0), (0,0), (0,0),
+    //                                     (0,0), (0,0), (0,0), (0,0), (0,0), (0,0),
+    //                                     (0,0), (2,5), (2,3), (2,5), (2,2), (0,0)];
+    //display_board(&board, &hit_stones_1, &hit_stones_2, &mut keep_count_of_1_stones, &mut keep_count_of_2_stones);
     
     // let mut board: Vec<(i32, i32)> = vec![(2,2), (1,1), (1,1), (1,1), (1,1), (1,1),
     //                                     (0,0), (1,3), (0,0), (0,0), (0,0), (2,5),
@@ -1159,8 +1180,10 @@ fn main() {
 
     // let number = read_input();
     // println!("You entered: {}", number);
+    let start = Instant::now();
+    play(1000, &mut history_of_games);
+    let duration = start.elapsed();
+    println!("Time taken by some_function: {:?}", duration);
     
-    play(100, &mut history_of_games)
-    // write_to_file(&mut (1, 5, 3));
-    // write_to_file(&mut (1, 5, 1));
+    
 }

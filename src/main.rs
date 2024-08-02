@@ -26,116 +26,116 @@ fn write_to_file_dice(dice: &(i32,i32)){
 }
 // Display of the board
 pub fn display_board(board: &Vec<(i32, i32)>, hit_stones_1: &i32, hit_stones_2: &i32, keep_count_of_1_stones: &mut i32, keep_count_of_2_stones: &mut i32) {
-    const lower_nums: &str = "11 10 9  8  7  6  | 5  4  3  2  1  0";
-    const upper_nums: &str = "12 13 14 15 16 17 | 18 19 20 21 22 23";
-    let mut highest_lower: i32 = 0;
-    let mut highest_upper: i32 = 0;
-    for i in 0..12{
-        if(board[i].1 > highest_lower){
-            highest_lower = board[i].1;
-        }
-    }
-    for i in 12..24{
-        if(board[i].1 > highest_upper){
-            highest_upper = board[i].1;
-        }
-    }
-    println!("{upper_nums}");
-    for i in 1..=highest_upper{
-        let mut row_string: String = String::from("");
-        for j in 12..24{
-            if(board[j].1 - i >= 0){
-                if(board[j].0 == 1){
-                    if(j == 17){
-                        row_string.push_str("*    ");
-                    }else{
-                        row_string.push_str("*  ");
-                    }
-                } else {
-                    if(j == 17){
-                        row_string.push_str("#    ");
-                    }else{
-                        row_string.push_str("#  ");
-                    }
-                }
-            }else{
-                if(j == 17){
-                    row_string.push_str("     ");
-                } else {
-                    row_string.push_str("   ")
-                }
-            }
-        }
-        println!("{row_string}");
-    }
-    // println!("-------------------------------------");
-    // println!("-------------------------------------"); 
-    println!("");
-    let mut lower_row_strings: Vec<String> = vec![];
-    for i in 1..=highest_lower{
-        let mut row_string: String = String::from("");
-        for j in (0..12).rev(){
-            if(board[j].1 - i >= 0){
-                if board[j].0 == 1{
-                    if j == 11 || j == 10{
-                        row_string.push_str("*  ");
-                    }else if j == 6 {
-                        row_string.push_str("*    ")
-                    }else {
-                        row_string.push_str("*  ");
-                    }
-                } else {
-                    if j == 11 || j == 10 {
-                        row_string.push_str("#  ");
-                    }else if j == 6{
-                        row_string.push_str("#    ");
-                    }else {
-                        row_string.push_str("#  ");
-                    }
-                }
-            }else{
-                if j == 6{
-                    row_string.push_str("     ");
-                } else {
-                    if j == 11 || j == 10{
-                        row_string.push_str("   ");
-                    } else {
-                        row_string.push_str("   ")
-                    }
+    // const lower_nums: &str = "11 10 9  8  7  6  | 5  4  3  2  1  0";
+    // const upper_nums: &str = "12 13 14 15 16 17 | 18 19 20 21 22 23";
+    // let mut highest_lower: i32 = 0;
+    // let mut highest_upper: i32 = 0;
+    // for i in 0..12{
+    //     if(board[i].1 > highest_lower){
+    //         highest_lower = board[i].1;
+    //     }
+    // }
+    // for i in 12..24{
+    //     if(board[i].1 > highest_upper){
+    //         highest_upper = board[i].1;
+    //     }
+    // }
+    // println!("{upper_nums}");
+    // for i in 1..=highest_upper{
+    //     let mut row_string: String = String::from("");
+    //     for j in 12..24{
+    //         if(board[j].1 - i >= 0){
+    //             if(board[j].0 == 1){
+    //                 if(j == 17){
+    //                     row_string.push_str("*    ");
+    //                 }else{
+    //                     row_string.push_str("*  ");
+    //                 }
+    //             } else {
+    //                 if(j == 17){
+    //                     row_string.push_str("#    ");
+    //                 }else{
+    //                     row_string.push_str("#  ");
+    //                 }
+    //             }
+    //         }else{
+    //             if(j == 17){
+    //                 row_string.push_str("     ");
+    //             } else {
+    //                 row_string.push_str("   ")
+    //             }
+    //         }
+    //     }
+    //     println!("{row_string}");
+    // }
+    // // println!("-------------------------------------");
+    // // println!("-------------------------------------"); 
+    // println!("");
+    // let mut lower_row_strings: Vec<String> = vec![];
+    // for i in 1..=highest_lower{
+    //     let mut row_string: String = String::from("");
+    //     for j in (0..12).rev(){
+    //         if(board[j].1 - i >= 0){
+    //             if board[j].0 == 1{
+    //                 if j == 11 || j == 10{
+    //                     row_string.push_str("*  ");
+    //                 }else if j == 6 {
+    //                     row_string.push_str("*    ")
+    //                 }else {
+    //                     row_string.push_str("*  ");
+    //                 }
+    //             } else {
+    //                 if j == 11 || j == 10 {
+    //                     row_string.push_str("#  ");
+    //                 }else if j == 6{
+    //                     row_string.push_str("#    ");
+    //                 }else {
+    //                     row_string.push_str("#  ");
+    //                 }
+    //             }
+    //         }else{
+    //             if j == 6{
+    //                 row_string.push_str("     ");
+    //             } else {
+    //                 if j == 11 || j == 10{
+    //                     row_string.push_str("   ");
+    //                 } else {
+    //                     row_string.push_str("   ")
+    //                 }
                     
-                }
-            }
-        }
-        lower_row_strings.push(row_string);
-    }
-    for i in (0..lower_row_strings.len()).rev(){
-        println!("{}",lower_row_strings[i]);
-    }
+    //             }
+    //         }
+    //     }
+    //     lower_row_strings.push(row_string);
+    // }
+    // for i in (0..lower_row_strings.len()).rev(){
+    //     println!("{}",lower_row_strings[i]);
+    // }
 
-    println!("{lower_nums}");
-    println!("hit_stones_1: {}", hit_stones_1);
-    println!("hit_stones_2: {}", hit_stones_2);
-    println!("out_stones_1: {}", 15 - *keep_count_of_1_stones);
-    println!("out_stones_2: {}", 15 - *keep_count_of_2_stones);
-    if 15 - *keep_count_of_1_stones > 15 {
-        println!("SSSSSS 111111 > 15");
-        read_input();
-    }
-    if 15 - *keep_count_of_2_stones > 15 {
-        println!("SSSSSS 2222222 > 15");
-        read_input();
-    }
-    let mut s1 = 0;
-    let mut s2 = 0;
-    for i in 0..=23{
-        if board[i].0 == 1 && board[i].1 >= 1{
-            s1 += board[i].1;
-        }
-        if board[i].0 == 2 && board[i].1 >= 1{
-            s2 += board[i].1;
-        }
-    }
-    println!("s1: {}, s2: {}", s1, s2);
+    // println!("{lower_nums}");
+    // println!("hit_stones_1: {}", hit_stones_1);
+    // println!("hit_stones_2: {}", hit_stones_2);
+    // println!("out_stones_1: {}", 15 - *keep_count_of_1_stones);
+    // println!("out_stones_2: {}", 15 - *keep_count_of_2_stones);
+    // if 15 - *keep_count_of_1_stones > 15 {
+    //     println!("SSSSSS 111111 > 15");
+    //     read_input();
+    // }
+    // if 15 - *keep_count_of_2_stones > 15 {
+    //     println!("SSSSSS 2222222 > 15");
+    //     read_input();
+    // }
+    // let mut s1 = 0;
+    // let mut s2 = 0;
+    // for i in 0..=23{
+    //     if board[i].0 == 1 && board[i].1 >= 1{
+    //         s1 += board[i].1;
+    //     }
+    //     if board[i].0 == 2 && board[i].1 >= 1{
+    //         s2 += board[i].1;
+    //     }
+    // }
+    // println!("s1: {}, s2: {}", s1, s2);
     
 }
 
@@ -1063,11 +1063,11 @@ pub fn play(number_of_games: i32, history_of_games: &mut Vec<( Vec<(i32, i32, i3
             }
         }
 
-        read_input();
+        //read_input();
         i += 1;
         write_to_file(&(0,0,0));
         write_to_file_dice(&(0,0));
-        println!("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        // println!("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         
     }
     println!("win rate: {}, {}", win_1, win_2);
@@ -1181,7 +1181,7 @@ fn main() {
     // let number = read_input();
     // println!("You entered: {}", number);
     let start = Instant::now();
-    play(1000, &mut history_of_games);
+    play(100000, &mut history_of_games);
     let duration = start.elapsed();
     println!("Time taken by some_function: {:?}", duration);
     
